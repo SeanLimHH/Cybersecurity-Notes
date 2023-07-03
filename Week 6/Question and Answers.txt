@@ -1,0 +1,144 @@
+Q1. How could we perform the exchange of keys in the real world? Do we need a secure channel? Why or why not?
+
+We need a secure channel. The secure channel helps ensure that other anonymous party is unable
+to change the intended data to be sent and also attempts to enforce confidentiality (it is harder
+for other parties to eavesdrop on the data).
+
+However, secure channels are more necessary in symmetric encryption systems since the keys are known to
+everybody (public). For asymmetric encryption algorithms, there is less need for secure channels due to
+its privacy characteristic. 
+
+To perform the exchange of keys in the real world, we can consider the resources we have.
+
+If the computational space permitted is very high, we can adopt a distributed solution idea.
+This means that each person has a shared key with everybody else.
+Using this shared key, each person can compute the Message Authentication Code (MAC) for their intended
+message to send to the other person as well as encrypt their own message to be sent.
+Similarly, the recipient can decrypt the message and verify it is from the correct person via the MAC. 
+This takes up a lot of space because for n people in communication requires n(n-1)/2 keys.
+
+If the computation space permitted is lower, we can adopt a centralised solution idea.
+This means that each person has their own shared key with just the server.
+When a person wants to send a message to another person, he asks the server for a new key. This key is
+then used to compute the MAC and to encrypt the message to be sent. Then, the message is sent directly
+to the other party. This, however, means that there is a single point of failure (server).
+
+Regarding the encryption for both cases, it is better to adopt a more random approach in key generated.
+Hence an encryption algorithm like Diffie-Hellman is recommended.
+
+Q2. What is an advantage and a disadvantage of DHKE?
+
+One advantage of DHKE is that it is asymmetric. This reduces the need for secure channels since the
+asymmetric keys are private to other people. Even if an attacker obtains the key, it is difficult for
+them to derive the private keys.
+
+One disadvantage of DHKE is that it does not enforce authentication. This is because since it is asymmetric,
+the keys are not shared, and since it is private, an attacker can impersonate one of the parties and act as 
+the sender and send his own message instead to the recipient.
+
+Task 2 Attacking DHKE with Baby-Step Giant-Steps method.
+
+I added the code in dhke.py. I tested for key sizes ranging from 16 to 33 (this value can be changed)
+
+Based on my results that I found, the larger the number of bits, the higher the difficulty of the attack.
+More time is required for larger number of bits. However, this is just a general trend.
+The time required seems to increase exponentially with more bits. At key size of 28, this is where the time to
+attack becomes significant: it took about 27.3 seconds. After which, the duration of the attack is generally high
+and continues to increase exponentially generally for every new bit.
+
+Q3. I would set the key to be at least 32 bits.
+
+The reason is that at 28 bits or 27 bits, the time to attack the message is generally fast enough. Just by adding
+4 bits to 32 bits from 28 bits, the message is way better encrypted (it took around 998 seconds to crack a 28-bit message.)
+
+Here are the results:
+
+Key size: 16
+Guessed key: 3249
+Real key: 3249
+Time taken: 0.006001949310302734 seconds.
+
+Key size: 17
+Guessed key: 14335
+Real key: 14335
+Time taken: 0.007178544998168945 seconds.
+
+Key size: 18
+Guessed key: 100512
+Real key: 100512
+Time taken: 0.012514591217041016 seconds.
+
+Key size: 19
+Guessed key: 527
+Real key: 527
+Time taken: 0.01652359962463379 seconds.
+
+Key size: 20
+Guessed key: 70239
+Real key: 70239
+Time taken: 0.010064125061035156 seconds.
+
+Key size: 21
+Guessed key: 111066
+Real key: 111066
+Time taken: 0.08428096771240234 seconds.
+
+Key size: 22
+Guessed key: 531586
+Real key: 531586
+Time taken: 0.0387418270111084 seconds.
+
+Key size: 23
+Guessed key: 1873713
+Real key: 1873713
+Time taken: 0.11398577690124512 seconds.
+
+Key size: 24
+Guessed key: 3048136
+Real key: 3048136
+Time taken: 0.6523809432983398 seconds.
+
+Key size: 25
+Guessed key: 4287402
+Real key: 4287402
+Time taken: 1.757845163345337 seconds.
+
+Key size: 26
+Guessed key: 16733203
+Real key: 16733203
+Time taken: 3.011542320251465 seconds.
+
+Key size: 27
+Guessed key: 18960617
+Real key: 18960617
+Time taken: 3.4579102993011475 seconds.
+
+Key size: 28
+Guessed key: 62733812
+Real key: 62733812
+Time taken: 12.025185823440552 seconds.
+
+Key size: 29
+Guessed key: 9473031
+Real key: 9473031
+Time taken: 3.507746696472168 seconds.
+
+Key size: 30
+Guessed key: 45153040
+Real key: 45153040
+Time taken: 13.290510416030884 seconds.
+
+Key size: 31
+Guessed key: 245882967
+Real key: 245882967
+Time taken: 166.28930616378784 seconds.
+
+Key size: 32
+Guessed key: 1448095152
+Real key: 1448095152
+Time taken: 998.5092313289642 seconds.
+
+Key size: 33
+Guessed key: 917258083
+Real key: 917258083
+Time taken: 5769.159029960632 seconds.
